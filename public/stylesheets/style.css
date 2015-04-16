@@ -1,3 +1,76 @@
-body {
-  font: 14px Arial, sans-serif;
+/* Reset */
+body, h1, h2, h3, h4, a, p, div, section, ul, li  {margin:0; padding:0; text-decoration:none; list-style-type:none;}
+a:visited, a:link {color: #000;} 
+ul { -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 0px;}
+
+
+/* Layout */
+body { width: 100%;}
+header, footer { padding: 20px;}
+.libraryWrapper { padding: 20px;} 
+p {border-top: 1px solid #000;}
+footer { border-top: 1px solid #000;}
+footer ul { display: inline; width: 100%;}
+ul.one-fourth { width: 21.5%; margin-right: 20px; float: left;}
+
+/* HOVER */
+a:hover {background-color:#FFFF99;}
+.entry a:hover {background-color:#FFF; text-decoration: underline;}
+
+/* Typography */
+h1, h1 a { font: 24px Arial; font-weight: 800; line-height: 30px;}
+p, ul, li, a, h2 { font: 16px Arial; line-height: 24px;}
+a.student, h2.student, span.student { color: #3333FF; }
+a.title, h2.title, span.title { font-weight: 700; color: #FF3300;}
+a.author, h2.author, span.author {color: #FFCC00;}
+span.created {color: #339933;}
+a.borrow {float:right;}
+ul.book-info li {border-top: 1px solid #000;}
+
+/* form */
+form {
+	font: 16px normal 'Arial';
+	line-height:24px;
+
+	margin: auto;
+	background: #fff;
+
+
+}
+
+input:focus {
+    outline:none;
+}
+
+
+input, text area, select    {
+
+font: 16px normal 'Arial';
+line-height: 24px;
+-webkit-box-sizing: border-box; /* For legacy WebKit based browsers */
+-moz-box-sizing: border-box; /* For legacy (Firefox <29) Gecko based browsers */
+box-sizing: border-box;
+
+}
+
+
+
+input.submit {
+font-size: 16px;
+
+}
+
+input.submit:hover {
+	background: #0000FF;
+	color: #fff;
+	cursor: pointer;
+}
+
+/* MEDIA */
+
+@media screen and (max-width: 768px) {
+	body {font-size:12px; line-height:16px; }
+	footer ul {display: block;}
+	ul.one-fourth {width: 100%;}
+	.entry, form {width: 100%; }
 }

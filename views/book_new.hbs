@@ -1,0 +1,56 @@
+<!-- 
+When the user presses "Submit" in the form, the content of the form fields
+will be added to the end of "/create" (the action specified in the <form> tag),
+and the resulting URL will be requested from the server. For example the URL
+might be 
+/create?width=25&height=25&top=25&left=25&color=#ff0000
+You can try entering a URL like this directly into the browser. It does the same
+thing as filling in the form and pressing "Submit".
+-->
+<body>
+    
+     <header>
+        <h1><a href="/">No Late Fees&trade;</a></h1>
+        <ul class="nav">
+            <li><a href="/new">Add a Book</a></li>
+            <li><a href="/about">About this site</a></li>
+        </ul>
+    </header>
+
+<div class="libraryWrapper">
+    <form action="/book/create">
+    
+    <!-- The "name" attribute determines the name of the attribute in the URL -->
+    <li>Book Title <input type="text" name="title"  ></li>
+    <li>Author<input type="text" name="author" ></li>
+    <li> Your Name <input type="text" name="student"></li>
+
+    <!-- Here's the submit button -->
+    <li><input type="submit" class="submit"> </li>
+    
+    <div class="form-bottom">
+        <!-- This is just a normal link back to the home page -->
+        <a class="cancel" href="/">Cancel</a>
+    </div>
+    <!--
+    Available HTML tags for form fields:
+    http://www.w3schools.com/html/html_form_elements.asp
+    
+    More info:
+    https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+    -->
+    </div><!--END libraryWrapper-->
+</form>
+
+<footer>
+    <ul class="one-fourth">
+        <li><strong>No Late Fees&trade;</strong></li>
+        <li><a href="http://www.art.yale.edu">Yale School of Art</a></li>
+    </ul>
+   
+    <ul class="one-fourth">
+        <li>Contact</li>
+        <li>Credits</li>
+    </ul>
+</footer>
+</body>

@@ -1,0 +1,35 @@
+<body>
+
+    <header>
+        <h1>No Late Fees&trade;</h1>
+        <ul class="nav">
+            <li><a href="/new">Add a Book</a></li>
+            <li><a href="/about">About this site</a></li>
+        </ul>
+    </header>
+
+   
+     <div class="libraryWrapper">
+          <h2 class="author">{{author}}</h2>
+
+    {{#each books}}
+        <p>
+              <a class="title" href="#"><strong>{{title}}</strong></a>
+        </p>
+  
+    {{/each}}
+    </div><!--END libraryWrapper-->
+    
+    <footer>
+    <ul class="one-fourth">
+        <li><strong>No Late Fees&trade;</strong></li>
+        <li><a href="http://www.art.yale.edu">Yale School of Art</a></li>
+    </ul>
+   
+    <ul class="one-fourth">
+        <li>Contact</li>
+        <li>Credits</li>
+    </ul>
+</footer>
+
+</body>

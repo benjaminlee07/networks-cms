@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var moment = require('moment');
-var feeds = require('../feeds.js');
 
 module.exports = router;
 
@@ -38,14 +36,14 @@ mongoose.connect(process.env.MONGOLAB_URI || ('mongodb://' + process.env.IP + '/
 // =   DEFINE OUR DATA MODELS
 // =
 
-// Define the data structure of a Phrase model
-// It has width, height, top, and left attributes, which are required to be numbers from 0–100
-// And it has a color attribute, which is optionaland is a string (text)
+// Define the data structure of a Book model
 // Allowed data types (Number, String, Date...): http://mongoosejs.com/docs/schematypes.html
 
-var Phrase = mongoose.model('Phrase', {
-  preposition: {type: String, required: true},
-  noun: {type: String, required: true},
+var Book = mongoose.model('Book', {
+  title: {type: String, required: true},
+  author: {type: String, required: true},
+  student: {type: String, required: true},
+  created: {type: Date, default: Date.now}
 });
 
 
@@ -60,16 +58,16 @@ var Phrase = mongoose.model('Phrase', {
 
 // HOME PAGE
 // /
-// Shows _all_ the phrases
+// Shows _all_ the books
 
 router.get('/', function(request, response, toss) {
   
   // When the server receives a request for "/", this code runs
 
-  // Find all the Shape records in the database
-  Phrase.find(function(err, phrases) {
+  // Find all the Book records in the database
+  Book.find().sort({_id: -1}).exec(function(err, books) {
     // This code will run once the database find is complete.
-    // phrases will contain a list (array) of all the phrases that were found.
+    // books will contain a list (array) of all the books that were found.
     // err will contain errors if any.
 
     // If there's an error, tell Express to do its default behavior, which is show the error page.
@@ -77,32 +75,7 @@ router.get('/', function(request, response, toss) {
     
     // The list of shapes will be passed to the template.
     // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
-    response.locals.phrases = phrases;
-    
-    // Also pass the temperature, wind direction, and next bus arrival.
-    // This can crash if the data hasn't loaded for whatever reason, so toss to Express's error page in that case.
-    try {
-      
-      // Use Moment.js to calculate the next bus arrival time minus the current time,
-      // and display it in english e.g. "in 18 minutes".
-      // http://momentjs.com/docs/#/displaying/from/ (returns difference as an english string e.g. "18 minutes")
-      // http://momentjs.com/docs/#/displaying/difference/ (returns difference in milliseconds)
-      var now = moment();
-      var next_arrival = moment(feeds.bus[0].arrival_at);
-      var arriving_in = next_arrival.from(now);
-      var margin = next_arrival.diff(now) / 1000;
-
-      response.locals.temperature = feeds.weather.main.temp;
-      response.locals.font_size = feeds.weather.main.temp / 2;
-      response.locals.wind_direction = feeds.weather.wind.deg;
-      response.locals.arriving_in = arriving_in;
-      response.locals.margin = margin;
-      response.locals.route = feeds.bus[0].route_id;
-      
-    }
-    catch(err) {
-      return toss(err);
-    }
+    response.locals.books = books;
     
     // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
     response.locals.layout = 'layout';
@@ -117,25 +90,26 @@ router.get('/', function(request, response, toss) {
 
 
 
-// SHOW PAGE
-// /show?id=54e2058e85b156d10b064ca0
-// Shows a _single_ phrase
+// SHOW PAGE FOR A BOOK.
+// /book?title=abc
+// Loos up by title so it may be _multiple_ book records
 
-router.get('/show', function(request, response, toss) {
+router.get('/book', function(request, response, toss) {
   
   // When the server receives a request for "/show", this code runs
   
-  // Find a Phrase with this id
-  Phrase.findOne({_id: request.query.id}, function(err, phrase) {
+  // Find books by title
+  Book.find({title: request.query.name}).sort({_id: -1}).exec(function(err, books) {
     // This code will run once the database find is complete.
-    // phrase will contain the found phrase.
+    // books will contain the found books.
     // err will contain errors if any (for example, no such record).
 
     if (err) return toss(err);
     
-    response.locals.phrase = phrase;
+    response.locals.books = books;
+    response.locals.title = request.query.name;
     response.locals.layout = 'layout';
-    response.render('show');
+    response.render('book');
     
   });
   
@@ -143,17 +117,17 @@ router.get('/show', function(request, response, toss) {
 
 
 
-// NEW PAGE
-// /new
+// NEW PAGE FOR A BOOK
+// /book/new
 
-router.get('/new', function(request, response) {
+router.get('/book/new', function(request, response) {
 
-  // When the server receives a request for "/new", this code runs
+  // When the server receives a request for "/book/new", this code runs
   
   // Just render a basic HTML page with a form. We don't need to pass any variables.
 
   response.locals.layout = 'layout';
-  response.render('new');
+  response.render('book_new');
   
   // Please see views/new.hbs for additional comments
   
@@ -161,35 +135,36 @@ router.get('/new', function(request, response) {
 
 
 
-// CREATE PAGE
-// /create?width=25&height=25&top=25&left=25&color=#ff0000
-// Normally you get to this page by clicking "Submit" on the /new page, but
+// CREATE PAGE FOR A BOOK
+// /book/create
+// Normally you get to this page by clicking "Submit" on the /book/new page, but
 // you could also enter a URL like the above directly into your browser.
 
-router.get('/create', function(request, response, toss) {
+router.get('/book/create', function(request, response, toss) {
   
-  // When the server receives a request for "/create", this code runs
+  // When the server receives a request for "/book/create", this code runs
   
   response.locals.layout = 'layout';
 
-  // Make a new Phrase in memory, with the parameters that come from the URL 
+  // Make a new Book in memory, with the parameters that come from the URL 
   // ?width=25&height=25&top=25&left=25&color=#ff0000
   // and store it in the shape variable
-  var phrase = new Phrase({
-    preposition: request.query.preposition,
-    noun: request.query.noun,
+  var book = new Book({
+    title: request.query.title,
+    author: request.query.author,
+    student: request.query.student
   });
   
   // Now save it to the database
-  phrase.save(function(err) {
+  book.save(function(err) {
     // This code runs once the database save is complete
 
     // An err here can be due to validations
     if (err) return toss(err);
     
     // Otherwise render a "thank you" page
-    response.locals.phrase = phrase;
-    response.render('create');
+    response.locals.book = book;
+    response.render('book_create');
     
     // Alternatively we could just do
     // response.redirect('/');
@@ -199,6 +174,71 @@ router.get('/create', function(request, response, toss) {
   
 });
 
+
+// SHOW PAGE FOR A STUDENT
+// /student?name=Ben
+// Shows all the books for a student
+
+router.get('/student', function(request, response, toss) {
+  
+  // When the server receives a request for "/student", this code runs
+
+  // Find all the Book records in the database, filtered to a student name
+  Book.find({student: request.query.name}).sort({_id: -1}).exec(function(err, books) {
+    // This code will run once the database find is complete.
+    // books will contain a list (array) of all the books that were found.
+    // err will contain errors if any.
+
+    // If there's an error, tell Express to do its default behavior, which is show the error page.
+    if (err) return toss(err);
+    
+    // The list of shapes will be passed to the template.
+    // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
+    response.locals.books = books;
+    response.locals.student = request.query.name;
+
+    // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
+    response.locals.layout = 'layout';
+
+    // Render the "home" template (located in the "views" folder).
+    response.render('student');
+
+  });
+  
+});
+
+
+// SHOW PAGE FOR AN AUTHOR
+// /student?name=
+// Shows all the books for an author
+
+router.get('/author', function(request, response, toss) {
+  
+  // When the server receives a request for "/student", this code runs
+
+  // Find all the Book records in the database, filtered to a student name
+  Book.find({author: request.query.name}).sort({_id: -1}).exec(function(err, books) {
+    // This code will run once the database find is complete.
+    // books will contain a list (array) of all the books that were found.
+    // err will contain errors if any.
+
+    // If there's an error, tell Express to do its default behavior, which is show the error page.
+    if (err) return toss(err);
+    
+    // The list of shapes will be passed to the template.
+    // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
+    response.locals.books = books;
+    response.locals.author = request.query.name;
+
+    // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
+    response.locals.layout = 'layout';
+
+    // Render the "home" template (located in the "views" folder).
+    response.render('author');
+
+  });
+  
+});
 
 
 // ABOUT PAGE
@@ -212,3 +252,5 @@ router.get('/about', function(request, response) {
   response.render('about');
   
 });
+
+

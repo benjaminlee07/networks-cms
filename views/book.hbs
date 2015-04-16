@@ -1,0 +1,39 @@
+ <header>
+        <h1><a href="/">No Late Fees&trade;</a></h1>
+        <ul class="nav">
+            <li><a href="/new">Add a Book</a></li>
+            <li><a href="/about">About this site</a></li>
+        </ul>
+    </header>
+
+
+
+<div class="libraryWrapper">
+    <h2 class="title">{{title}}</h2>
+{{#each books}}
+
+    <div class="book">
+        <ul class="book-info">
+            <li><span class="author">Author: {{author}}</span></li>
+            <li><span class="student">Student: {{student}}</span></li>
+            <li></li>Added on: <span class="created">{{created}}</span></li>
+            <li></li><a href="borrow?id={{id}}">Borrow</a></li>
+                <!-- TODO: List past borrowings of this book id -->
+            
+        </ul>
+    </div>
+
+{{/each}}
+</div><!--END libraryWrapper-->
+
+<footer>
+    <ul class="one-fourth">
+        <li><strong>No Late Fees&trade;</strong></li>
+        <li><a href="http://www.art.yale.edu">Yale School of Art</a></li>
+    </ul>
+   
+    <ul class="one-fourth">
+        <li>Contact</li>
+        <li>Credits</li>
+    </ul>
+</footer>
