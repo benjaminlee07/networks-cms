@@ -9,20 +9,25 @@
         </ul>
     </header>
 
-     <div class="libraryWrapper">
+    <div class="libraryWrapper">
     {{#each events}}
     
-   
-   
         <p class="entry">
-                {{#if isBook}}
-                    <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+            {{#if isBook}}
+                <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+                on <span class="created">{{created}}</span>.
+                {{#unless onLoan}}<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>{{/unless}}
+            {{else}}
+                {{#if isLoan}}
+                    <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                     on <span class="created">{{created}}</span>.
-                    <a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>
+                    {{#unless returned}}<a href="/loan/return?book_id={{book.id}}" class="borrow">Return</a>{{/unless}}
                 {{else}}
-                    <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                    on <span class="created">{{created}}</span>.<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>
+                    <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                    on <span class="created">{{created}}</span>.
+                    {{#unless book.onLoan}}<a href="/loan/create?book_id={{book.id}}" class="borrow">Borrow</a>{{/unless}}
                 {{/if}}
+            {{/if}}
         </p>
   
     {{/each}}
@@ -32,7 +37,7 @@
 <footer>
     <ul class="one-fourth">
         <li><strong>No Late Fees&trade;</strong></li>
-        <li><a href="http://www.art.yale.edu" target="_blank">Yale School of Art</a></li>
+        <li><a href="http://art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
     <ul class="one-fourth">

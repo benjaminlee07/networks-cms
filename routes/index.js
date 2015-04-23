@@ -42,19 +42,30 @@ mongoose.connect(process.env.MONGOLAB_URI || ('mongodb://' + process.env.IP + '/
 // Define the data structure of a Book model
 // Allowed data types (Number, String, Date...): http://mongoosejs.com/docs/schematypes.html
 
-var Loans = new mongoose.Schema({
+var LoanSchema = new mongoose.Schema({
   student: {type: String, required: true},
   created: {type: Date, default: Date.now},
-  active: Boolean
+  returned: {type: Date}
 });
+LoanSchema.methods.isActive = function() {
+  return !this.returned;
+};
 
-var Book = mongoose.model('Book', {
+var BookSchema = new mongoose.Schema({
   title: {type: String, required: true},
   author: {type: String, required: true},
   student: {type: String, required: true},
   created: {type: Date, default: Date.now},
-  loans: [Loans]
+  loans: [LoanSchema]
 });
+BookSchema.methods.isOnLoan = function() {
+  for (var i = 0; i < this.loans.length; i++) {
+    if (this.loans[i].isActive()) return true;
+  }
+  return false;
+};
+
+var Book = mongoose.model('Book', BookSchema);
 
 
 
@@ -94,7 +105,7 @@ router.get('/', cas.bouncer, function(request, response, toss) {
     // This code will run once the database find is complete.
     // books will contain a list (array) of all the books that were found.
     // err will contain errors if any.
-
+    
     // If there's an error, tell Express to do its default behavior, which is show the error page.
     if (err) return toss(err);
     
@@ -208,10 +219,8 @@ router.get('/book/create', cas.blocker, function(request, response, toss) {
 
 router.get('/loan/create', cas.blocker, function(request, response, toss) {
 
-  // When the server receives a request for "/book/create", this code runs
+  // When the server receives a request for "/loan/create", this code runs
   
-  response.locals.layout = 'layout';
-
   // Find the book we're loaning
   Book.findOne({_id: request.query.book_id}, function(err, book) {
     // This code runs once the book has been found
@@ -219,11 +228,10 @@ router.get('/loan/create', cas.blocker, function(request, response, toss) {
     
     // Create the loan in memory
     book.loans.push({
-      student: request.session.username, 
-      active: true
+      student: request.session.username
     });
     
-    // Save the frequency (also saves the loan)
+    // Save the book (also saves the loan)
     book.save(function(err) {
       // This code runs once the database save is complete
   
@@ -239,6 +247,43 @@ router.get('/loan/create', cas.blocker, function(request, response, toss) {
     
 });
 
+
+// RETURN PAGE FOR A LOAN
+// /loan/return?book_id=123
+// Since a book could have multiple loans, returns any active loans for this book. In theory just one should be active.
+// NOTE: This allows anyone to return the book, not just the borrower. Restricting to just the borrower would be easy if desired.
+
+router.get('/loan/return', cas.blocker, function(request, response, toss) {
+
+  // When the server receives a request for "/loan/return", this code runs
+  
+  // Find the book we're returning
+  Book.findOne({_id: request.query.book_id}, function(err, book) {
+    // This code runs once the book has been found
+    if (err) return toss(err);
+    
+    // Return any active loans
+    for (var i = 0; i < book.loans.length; i++) {
+      if (book.loans[i].isActive()) {
+        book.loans[i].returned = Date.now();
+      }
+    }
+
+    // Save the book (also saves the loans)
+    book.save(function(err) {
+      // This code runs once the database save is complete
+  
+      // An err here can be due to validations
+      if (err) return toss(err);
+      
+      // Don't render a "thank you" page; instead redirect to the homepage
+      response.redirect('/');
+      
+    });
+    
+  });
+    
+});
 
 
 // SHOW PAGE FOR A STUDENT
@@ -327,12 +372,25 @@ function eventsFromBooks(books) {
   for (var i = 0; i < books.length; i++) {
     var book = books[i];
     book.isBook = true;
+    book.onLoan = book.isOnLoan();
+    book.loanClass = '';
+    if (book.onLoan) {
+      book.loanClass = 'on-loan';
+    }
     events.push(book);
     for (var j = 0; j < book.loans.length; j++) {
       var loan = book.loans[j];
       loan.isLoan = true;
       loan.book = book;
       events.push(loan);
+      if (loan.returned) {
+        events.push({
+          isReturn: true,
+          book: book,
+          student: loan.student,
+          created: loan.returned
+        });
+      }
     }
   }
   events.sort(function(a, b) {

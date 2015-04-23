@@ -26,6 +26,9 @@ a.author, h2.author, span.author, label.author {color: #FFCC00;}
 span.created {color: #339933;}
 a.borrow {float:right;}
 ul.book-info li {border-top: 1px solid #000;}
+.on-loan {
+    text-decoration: line-through;
+}
 
 /* form */
 form {
