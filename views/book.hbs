@@ -39,7 +39,7 @@
                     {{else}}
                         {{#if isReturn}}
                             <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                            on <span class="created">{{created_formatted}}</span>.
+                            on <span class="created">{{returned_formatted}}</span>.
                         {{/if}}
                     {{/if}}
                 </p>
