@@ -9,7 +9,7 @@ body { width: 100%;}
 header, footer { padding: 16px;}
 .libraryWrapper { padding: 20px;} 
 p, h2.title, h2.author, h2.student {border-top: 1px solid #000;}
-footer { border-top: 1px solid #000; position: fixed; bottom: 0; width: 100%; background: #fff; z-index: 0;}
+footer { border-top: 1px solid #000; width: 100%; background: #fff; z-index: 0;}
 footer ul { display: inline; width: 100%;}
 ul.one-fourth { width: 21.5%; margin-right: 20px; float: left;}
 br {line-height: 24px;}
