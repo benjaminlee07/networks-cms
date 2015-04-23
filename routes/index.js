@@ -58,12 +58,20 @@ var BookSchema = new mongoose.Schema({
   created: {type: Date, default: Date.now},
   loans: [LoanSchema]
 });
+
 BookSchema.methods.isOnLoan = function() {
   for (var i = 0; i < this.loans.length; i++) {
     if (this.loans[i].isActive()) return true;
   }
   return false;
 };
+
+
+// See http://momentjs.com/docs/#/displaying/format/ for format options
+BookSchema.methods.created_formatted = function() {
+  return moment(this.created).subtract(4, "hours").format("MMMM D, YYYY [at] h:mm a");
+}
+
 
 var Book = mongoose.model('Book', BookSchema);
 

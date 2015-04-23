@@ -12,14 +12,15 @@
 
      <div class="libraryWrapper">
            <h2 class="student">{{student}}</h2>
-           
+           <p>Available Books</p>
             {{#each books}}
-                <p>
-                      <a class="title" href="/book?name={{title}}"><strong>{{title}}</a></strong> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+                <p class="entry">
+                      <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
                 </p>
             {{/each}}
             
             <div class="events">
+                <p>Recent Activity</p>
                 {{#each events}}
                     <p class="entry">
                         {{#if isLoan}}

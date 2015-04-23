@@ -3,9 +3,9 @@
 
     <header>
         <h1><a href="/">No Late Fees&trade;</a></h1>
-        <ul class="nav">
+        <ul class="nav on-fourth">
             <li><a href="/book/new">Add a Book</a></li>
-            <li><a href="/about">About this site</a></li>
+            <li><a href="/about">About</a></li>
         </ul>
     </header>
 
@@ -15,7 +15,7 @@
         <p class="entry">
             {{#if isBook}}
                 <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
-                on <span class="created">{{created}}</span>.
+                on <span class="created">{{created_formatted}}</span>.
                 {{#unless onLoan}}<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>{{/unless}}
             {{else}}
                 {{#if isLoan}}

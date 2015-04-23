@@ -8,14 +8,15 @@ ul { -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 
 body { width: 100%;}
 header, footer { padding: 16px;}
 .libraryWrapper { padding: 20px;} 
-p {border-top: 1px solid #000;}
+p, h2.title, h2.author, h2.student {border-top: 1px solid #000;}
 footer { border-top: 1px solid #000; position: fixed; bottom: 0; width: 100%; background: #fff; z-index: 0;}
 footer ul { display: inline; width: 100%;}
 ul.one-fourth { width: 21.5%; margin-right: 20px; float: left;}
+br {line-height: 24px;}
 
 /* HOVER */
 a:hover {background-color:#FFFF99;}
-.entry a:hover {background-color:#FFF; text-decoration: underline;}
+.entry a:hover, a.student:hover, a.author:hover, a.title:hover, a.borrow:hover {background-color:#FFF; text-decoration: underline;}
 
 /* Typography */
 h1, h1 a { font: 24px Arial; font-weight: 800; line-height: 30px;}
@@ -26,9 +27,7 @@ a.author, h2.author, span.author, label.author {color: #FFCC00;}
 span.created {color: #339933;}
 a.borrow {float:right;}
 ul.book-info li {border-top: 1px solid #000;}
-.on-loan {
-    text-decoration: line-through;
-}
+.on-loan { text-decoration: line-through;}
 
 /* form */
 form {
