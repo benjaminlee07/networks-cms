@@ -10,14 +10,19 @@
     </header>
 
      <div class="libraryWrapper">
-    {{#each books}}
+    {{#each events}}
     
    
    
         <p class="entry">
-                <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
-                on <span class="created">{{created}}</span>.
-                <a href="borrow?id={{id}}" class="borrow">Borrow</a>
+                {{#if isBook}}
+                    <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+                    on <span class="created">{{created}}</span>.
+                    <a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>
+                {{else}}
+                    <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                    on <span class="created">{{created}}</span>.<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>
+                {{/if}}
         </p>
   
     {{/each}}
@@ -27,12 +32,12 @@
 <footer>
     <ul class="one-fourth">
         <li><strong>No Late Fees&trade;</strong></li>
-        <li><a href="http://www.art.yale.edu">Yale School of Art</a></li>
+        <li><a href="http://www.art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
     <ul class="one-fourth">
-        <li>Contact</li>
-        <li>Credits</li>
+        <li><a href="mailto:benjamin.d.lee@yale.edu" target="_blank">Contact</a></li>
+        <li>&copy; 2015</li>
     </ul>
 </footer>
 

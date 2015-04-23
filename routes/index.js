@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
+var cas = require('grand_master_cas');
 
 module.exports = router;
 
+var hostname = process.env.C9_HOSTNAME || "localhost:3000";
 
 
 
@@ -39,13 +42,35 @@ mongoose.connect(process.env.MONGOLAB_URI || ('mongodb://' + process.env.IP + '/
 // Define the data structure of a Book model
 // Allowed data types (Number, String, Date...): http://mongoosejs.com/docs/schematypes.html
 
+var Loans = new mongoose.Schema({
+  student: {type: String, required: true},
+  created: {type: Date, default: Date.now},
+  active: Boolean
+});
+
 var Book = mongoose.model('Book', {
   title: {type: String, required: true},
   author: {type: String, required: true},
   student: {type: String, required: true},
-  created: {type: Date, default: Date.now}
+  created: {type: Date, default: Date.now},
+  loans: [Loans]
 });
 
+
+
+
+// =========================================================
+// =
+// =   SET UP CAS (FOR YALE USER AUTHENTICATION)
+// =
+
+cas.configure({
+  casHost: "secure.its.yale.edu",             // required
+  ssl: true,                                  // default false, Yale requires true
+  service: 'https://' + hostname + '/',       // Absolute URL to where cas.bouncer should take you after successful login.
+  redirectUrl: '/about',                      // the route that cas.blocker will send to if not authed. Defaults to '/'
+  sessionName: 'username'                     // get the netID from request.session.whatever - cas_user by default.
+});
 
 
 
@@ -60,12 +85,12 @@ var Book = mongoose.model('Book', {
 // /
 // Shows _all_ the books
 
-router.get('/', function(request, response, toss) {
+router.get('/', cas.bouncer, function(request, response, toss) {
   
   // When the server receives a request for "/", this code runs
 
   // Find all the Book records in the database
-  Book.find().sort({_id: -1}).exec(function(err, books) {
+  Book.find(function(err, books) {
     // This code will run once the database find is complete.
     // books will contain a list (array) of all the books that were found.
     // err will contain errors if any.
@@ -75,7 +100,7 @@ router.get('/', function(request, response, toss) {
     
     // The list of shapes will be passed to the template.
     // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
-    response.locals.books = books;
+    response.locals.events = eventsFromBooks(books);
     
     // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
     response.locals.layout = 'layout';
@@ -94,7 +119,7 @@ router.get('/', function(request, response, toss) {
 // /book?title=abc
 // Loos up by title so it may be _multiple_ book records
 
-router.get('/book', function(request, response, toss) {
+router.get('/book', cas.blocker, function(request, response, toss) {
   
   // When the server receives a request for "/show", this code runs
   
@@ -120,13 +145,14 @@ router.get('/book', function(request, response, toss) {
 // NEW PAGE FOR A BOOK
 // /book/new
 
-router.get('/book/new', function(request, response) {
+router.get('/book/new', cas.blocker, function(request, response) {
 
   // When the server receives a request for "/book/new", this code runs
   
   // Just render a basic HTML page with a form. We don't need to pass any variables.
 
   response.locals.layout = 'layout';
+  response.locals.username = request.session.username;
   response.render('book_new');
   
   // Please see views/new.hbs for additional comments
@@ -140,7 +166,7 @@ router.get('/book/new', function(request, response) {
 // Normally you get to this page by clicking "Submit" on the /book/new page, but
 // you could also enter a URL like the above directly into your browser.
 
-router.get('/book/create', function(request, response, toss) {
+router.get('/book/create', cas.blocker, function(request, response, toss) {
   
   // When the server receives a request for "/book/create", this code runs
   
@@ -152,7 +178,7 @@ router.get('/book/create', function(request, response, toss) {
   var book = new Book({
     title: request.query.title,
     author: request.query.author,
-    student: request.query.student
+    student: request.session.username
   });
   
   // Now save it to the database
@@ -175,11 +201,51 @@ router.get('/book/create', function(request, response, toss) {
 });
 
 
+// CREATE PAGE FOR A LOAN
+// /loan/create?book_id=123
+// Normally you get to this page by clicking "Borrow",
+// you could also enter a URL like the above directly into your browser.
+
+router.get('/loan/create', cas.blocker, function(request, response, toss) {
+
+  // When the server receives a request for "/book/create", this code runs
+  
+  response.locals.layout = 'layout';
+
+  // Find the book we're loaning
+  Book.findOne({_id: request.query.book_id}, function(err, book) {
+    // This code runs once the book has been found
+    if (err) return toss(err);
+    
+    // Create the loan in memory
+    book.loans.push({
+      student: request.session.username, 
+      active: true
+    });
+    
+    // Save the frequency (also saves the loan)
+    book.save(function(err) {
+      // This code runs once the database save is complete
+  
+      // An err here can be due to validations
+      if (err) return toss(err);
+      
+      // Don't render a "thank you" page; instead redirect to the homepage
+      response.redirect('/');
+      
+    });
+    
+  });
+    
+});
+
+
+
 // SHOW PAGE FOR A STUDENT
 // /student?name=Ben
 // Shows all the books for a student
 
-router.get('/student', function(request, response, toss) {
+router.get('/student', cas.blocker, function(request, response, toss) {
   
   // When the server receives a request for "/student", this code runs
 
@@ -212,7 +278,7 @@ router.get('/student', function(request, response, toss) {
 // /student?name=
 // Shows all the books for an author
 
-router.get('/author', function(request, response, toss) {
+router.get('/author', cas.blocker, function(request, response, toss) {
   
   // When the server receives a request for "/student", this code runs
 
@@ -254,3 +320,25 @@ router.get('/about', function(request, response) {
 });
 
 
+
+// Take a list of books and return a list of books and loans, sorted by date
+function eventsFromBooks(books) {
+  var events = [];
+  for (var i = 0; i < books.length; i++) {
+    var book = books[i];
+    book.isBook = true;
+    events.push(book);
+    for (var j = 0; j < book.loans.length; j++) {
+      var loan = book.loans[j];
+      loan.isLoan = true;
+      loan.book = book;
+      events.push(loan);
+    }
+  }
+  events.sort(function(a, b) {
+    if (a.created > b.created) return -1;
+    if (a.created < b.created) return 1;
+    return 0;
+  });
+  return events;
+}

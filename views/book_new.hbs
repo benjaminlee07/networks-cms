@@ -18,20 +18,26 @@ thing as filling in the form and pressing "Submit".
     </header>
 
 <div class="libraryWrapper">
-    <form action="/book/create">
+    <form class="book_form" action="/book/create">
     
     <!-- The "name" attribute determines the name of the attribute in the URL -->
-    <li>Book Title <input type="text" name="title"  ></li>
-    <li>Author<input type="text" name="author" ></li>
-    <li> Your Name <input type="text" name="student"></li>
+    <ul>
+        <li>
+            <label for="title" class="title">Book Title: </label> <input type="text" name="title" >
+        </li>
+        <li>
+            <label for="author" class="author">Author:</label> <input type="text" name="author" >
+        </li>
+        <li>
+            <label for="student" class="student">Your Name:</label> {{username}}
+        </li>
 
-    <!-- Here's the submit button -->
-    <li><input type="submit" class="submit"> </li>
-    
-    <div class="form-bottom">
-        <!-- This is just a normal link back to the home page -->
-        <a class="cancel" href="/">Cancel</a>
-    </div>
+        <!-- Here's the submit button -->
+        <li>
+            <input type="submit" class="submit">
+        </li>
+    </ul>
+  
     <!--
     Available HTML tags for form fields:
     http://www.w3schools.com/html/html_form_elements.asp
@@ -45,12 +51,12 @@ thing as filling in the form and pressing "Submit".
 <footer>
     <ul class="one-fourth">
         <li><strong>No Late Fees&trade;</strong></li>
-        <li><a href="http://www.art.yale.edu">Yale School of Art</a></li>
+        <li><a href="http://www.art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
     <ul class="one-fourth">
-        <li>Contact</li>
-        <li>Credits</li>
+        <li><a href="mailto:benjamin.d.lee@yale.edu" target="_blank">Contact</a></li>
+        <li>&copy; 2015</li>
     </ul>
 </footer>
 </body>
