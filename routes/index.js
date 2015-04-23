@@ -5,7 +5,7 @@ var cas = require('grand_master_cas');
 
 module.exports = router;
 
-var hostname = process.env.C9_HOSTNAME || "localhost:3000";
+var hostname = process.env.C9_HOSTNAME || "nolatefees.herokuapp.com" || "localhost:3000";
 
 
 
