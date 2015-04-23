@@ -50,6 +50,13 @@ var LoanSchema = new mongoose.Schema({
 LoanSchema.methods.isActive = function() {
   return !this.returned;
 };
+// See http://momentjs.com/docs/#/displaying/format/ for format options
+LoanSchema.methods.created_formatted = function() {
+  return moment(this.created).subtract(4, "hours").format("MMMM D, YYYY [at] h:mm a");
+}
+LoanSchema.methods.returned_formatted = function() {
+  return moment(this.returned).subtract(4, "hours").format("MMMM D, YYYY [at] h:mm a");
+}
 
 var BookSchema = new mongoose.Schema({
   title: {type: String, required: true},
@@ -408,7 +415,7 @@ function eventsFromBooks(books) {
           isReturn: true,
           book: book,
           student: loan.student,
-          created: loan.returned
+          created_formatted: loan.returned_formatted()
         });
       }
     }
@@ -449,7 +456,7 @@ function getEventsFromStudent(student, callback) {
               isReturn: true,
               book: book,
               student: loan.student,
-              created: loan.returned
+              created_formatted: loan.returned_formatted()
             });
           }
         }
