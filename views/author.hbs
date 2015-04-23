@@ -9,15 +9,32 @@
     </header>
 
    
-     <div class="libraryWrapper">
+    <div class="libraryWrapper">
           <h2 class="author">{{author}}</h2>
 
-    {{#each books}}
-        <p>
-              <a class="title" href="#"><strong>{{title}}</strong></a>
-        </p>
-  
-    {{/each}}
+        {{#each books}}
+            <p>
+                  <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a>
+            </p>
+            
+            <div class="events">
+                {{#each events}}
+                    <p class="entry">
+                        {{#if isLoan}}
+                            <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                            on <span class="created">{{created}}</span>.
+                        {{else}}
+                            {{#if isReturn}}
+                                <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                                on <span class="created">{{created}}</span>.
+                            {{/if}}
+                        {{/if}}
+                    </p>
+                {{/each}}  
+            </div>        
+      
+        {{/each}}
+        
     </div><!--END libraryWrapper-->
     
     <footer>

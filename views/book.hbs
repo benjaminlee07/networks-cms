@@ -13,14 +13,35 @@
 {{#each books}}
 
     <div class="book">
+        
         <ul class="book-info">
-            <li><span class="author">Author: {{author}}</span></li>
-            <li><span class="student">Student: {{student}}</span></li>
+            <li><span class="author">Author: <a class="author" href="/author?name={{author}}">{{author}}</a></span></li>
+            <li><span class="student">Student: <a class="student" href="/student?name={{student}}">{{student}}</a></span></li>
             <li></li>Added on: <span class="created">{{created}}</span></li>
-            <li></li><a href="borrow?id={{id}}">Borrow</a></li>
-                <!-- TODO: List past borrowings of this book id -->
-            
+            <li></li>
+            {{#if onLoan}}
+                <a href="/loan/return?book_id={{id}}">Return</a></li>
+            {{else}}
+                <a href="/loan/create?book_id={{id}}">Borrow</a></li>
+            {{/if}}
         </ul>
+        
+        <div class="events">
+            {{#each events}}
+                <p class="entry">
+                    {{#if isLoan}}
+                        <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                        on <span class="created">{{created}}</span>.
+                    {{else}}
+                        {{#if isReturn}}
+                            <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                            on <span class="created">{{created}}</span>.
+                        {{/if}}
+                    {{/if}}
+                </p>
+            {{/each}}  
+        </div>
+        
     </div>
 
 {{/each}}

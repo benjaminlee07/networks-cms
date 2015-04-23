@@ -109,8 +109,6 @@ router.get('/', cas.bouncer, function(request, response, toss) {
     // If there's an error, tell Express to do its default behavior, which is show the error page.
     if (err) return toss(err);
     
-    // The list of shapes will be passed to the template.
-    // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
     response.locals.events = eventsFromBooks(books);
     
     // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
@@ -124,9 +122,7 @@ router.get('/', cas.bouncer, function(request, response, toss) {
 });
 
 
-
-
-// SHOW PAGE FOR A BOOK.
+// SHOW PAGE FOR A BOOK BY TITLE
 // /book?title=abc
 // Loos up by title so it may be _multiple_ book records
 
@@ -142,6 +138,11 @@ router.get('/book', cas.blocker, function(request, response, toss) {
 
     if (err) return toss(err);
     
+    for (var i = 0; i < books.length; i++) {
+      books[i].onLoan = books[i].isOnLoan();
+      books[i].events = eventsFromBooks([books[i]]);
+    }
+
     response.locals.books = books;
     response.locals.title = request.query.name;
     response.locals.layout = 'layout';
@@ -302,18 +303,22 @@ router.get('/student', cas.blocker, function(request, response, toss) {
 
     // If there's an error, tell Express to do its default behavior, which is show the error page.
     if (err) return toss(err);
+
+    getEventsFromStudent(request.query.name, function(err, events) {
+      if (err) return toss(err);
+
+      response.locals.events = events;
+      response.locals.books = books;
+      response.locals.student = request.query.name;
+  
+      // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
+      response.locals.layout = 'layout';
+  
+      // Render the "home" template (located in the "views" folder).
+      response.render('student');
+      
+    });
     
-    // The list of shapes will be passed to the template.
-    // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
-    response.locals.books = books;
-    response.locals.student = request.query.name;
-
-    // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
-    response.locals.layout = 'layout';
-
-    // Render the "home" template (located in the "views" folder).
-    response.render('student');
-
   });
   
 });
@@ -335,9 +340,16 @@ router.get('/author', cas.blocker, function(request, response, toss) {
 
     // If there's an error, tell Express to do its default behavior, which is show the error page.
     if (err) return toss(err);
+
+    for (var i = 0; i < books.length; i++) {
+      books[i].onLoan = books[i].isOnLoan();
+      books[i].loanClass = '';
+      if (books[i].onLoan) {
+        books[i].loanClass = 'on-loan';
+      }
+      books[i].events = eventsFromBooks([books[i]]);
+    }
     
-    // The list of shapes will be passed to the template.
-    // Any additional variables can be passed in a similar way (response.locals.foo = bar;)
     response.locals.books = books;
     response.locals.author = request.query.name;
 
@@ -366,7 +378,7 @@ router.get('/about', function(request, response) {
 
 
 
-// Take a list of books and return a list of books and loans, sorted by date
+// Take a list of books and return a list of books, loans, and returns, sorted by date
 function eventsFromBooks(books) {
   var events = [];
   for (var i = 0; i < books.length; i++) {
@@ -399,4 +411,47 @@ function eventsFromBooks(books) {
     return 0;
   });
   return events;
+}
+
+// Take a student a return a list of loans and returns, sorted by date
+function getEventsFromStudent(student, callback) {
+  console.log("eventsFromStudent", student);
+  Book.find(function(err, books) {
+    if (err) {
+      return callback(err);
+    }
+    var events = [];
+    for (var i = 0; i < books.length; i++) {
+      var book = books[i];
+      book.isBook = true;
+      book.onLoan = book.isOnLoan();
+      book.loanClass = '';
+      if (book.onLoan) {
+        book.loanClass = 'on-loan';
+      }
+      for (var j = 0; j < book.loans.length; j++) {
+        var loan = book.loans[j];
+        console.log(loan.student);
+        if (loan.student == student) {
+          loan.isLoan = true;
+          loan.book = book;
+          events.push(loan);
+          if (loan.returned) {
+            events.push({
+              isReturn: true,
+              book: book,
+              student: loan.student,
+              created: loan.returned
+            });
+          }
+        }
+      }
+    }
+    events.sort(function(a, b) {
+      if (a.created > b.created) return -1;
+      if (a.created < b.created) return 1;
+      return 0;
+    });
+    callback(null, events);
+  });
 }

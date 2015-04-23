@@ -12,12 +12,29 @@
 
      <div class="libraryWrapper">
            <h2 class="student">{{student}}</h2>
-    {{#each books}}
-        <p>
-              <a class="title" href="#"><strong>{{title}}</a></strong> by <a class="author" herf="#">{{author}}</a>
-        </p>
-  
-    {{/each}}
+           
+            {{#each books}}
+                <p>
+                      <a class="title" href="/book?name={{title}}"><strong>{{title}}</a></strong> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+                </p>
+            {{/each}}
+            
+            <div class="events">
+                {{#each events}}
+                    <p class="entry">
+                        {{#if isLoan}}
+                            <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                            on <span class="created">{{created}}</span>.
+                        {{else}}
+                            {{#if isReturn}}
+                                <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                                on <span class="created">{{created}}</span>.
+                            {{/if}}
+                        {{/if}}
+                    </p>
+                {{/each}}  
+            </div>
+        
     </div><!--END libraryWrapper-->
     
     <footer>
