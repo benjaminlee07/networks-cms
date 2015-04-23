@@ -18,7 +18,7 @@
         <ul class="book-info">
             <li><span class="author">Author: <a class="author" href="/author?name={{author}}">{{author}}</a></span></li>
             <li><span class="student">Student: <a class="student" href="/student?name={{student}}">{{student}}</a></span></li>
-            <li></li>Added on: <span class="created">{{created}}</span></li>
+            <li></li>Added on: <span class="created">{{created_formatted}}</span></li>
             {{#if onLoan}}
                 <a class="borrow" href="/loan/return?book_id={{id}}">Return</a></li>
             {{else}}
