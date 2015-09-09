@@ -22,7 +22,7 @@
                     <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
                     {{#unless returned}}<a href="/loan/return?book_id={{book.id}}" class="borrow">Return</a>{{/unless}}
                 {{else}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>g.
+                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
                     {{#unless book.onLoan}}<a href="/loan/create?book_id={{book.id}}" class="borrow">Borrow</a>{{/unless}}
                 {{/if}}
             {{/if}}
