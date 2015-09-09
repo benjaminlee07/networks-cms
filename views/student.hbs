@@ -20,22 +20,7 @@
                 </p>
             {{/each}}
             
-            <div class="events">
-                <p>Recent Activity</p>
-                {{#each events}}
-                    <p class="entry">
-                        {{#if isLoan}}
-                            <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                            on <span class="created">{{created_formatted}}</span>.
-                        {{else}}
-                            {{#if isReturn}}
-                            <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                            on <span class="created">{{created_formatted}}</span>.
-                        {{/if}}
-                        {{/if}}
-                    </p>
-                {{/each}}  
-            </div>
+            
         
     </div><!--END libraryWrapper-->
     
