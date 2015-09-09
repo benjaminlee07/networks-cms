@@ -2,10 +2,11 @@
 <body>
 
     <header>
-        <h1><a href="/">No Late Fees&trade;</a></h1>
-        <ul class="nav on-fourth">
+        <h1><a href="/">No Late Fees</a></h1>
+        <ul class="nav">
             <li><a href="/book/new">Add a Book</a></li>
             <li><a href="/about">About</a></li>
+            <li><a href="/bookshelf">Bookshelf</a></li>
         </ul>
     </header>
 
@@ -21,7 +22,7 @@
                     <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
                     {{#unless returned}}<a href="/loan/return?book_id={{book.id}}" class="borrow">Return</a>{{/unless}}
                 {{else}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
+                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>g.
                     {{#unless book.onLoan}}<a href="/loan/create?book_id={{book.id}}" class="borrow">Borrow</a>{{/unless}}
                 {{/if}}
             {{/if}}
@@ -33,7 +34,7 @@
 
 <footer>
     <ul class="one-fourth">
-        <li><strong>No Late Fees&trade;</strong></li>
+        <li><strong>No Late Fees</strong></li>
         <li><a href="http://art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    

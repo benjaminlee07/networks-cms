@@ -8,9 +8,9 @@ ul { -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 
 body { width: 100%;}
 header, footer { padding: 16px;}
 .libraryWrapper { padding: 20px;} 
-p, h2.title, h2.author, h2.student {border-top: 1px solid #000;}
+p, h2.title, h2.author, h2.student, .book-info li  { border-top: 1px solid #000;}
 footer { border-top: 1px solid #000; padding-top: 20px; width: 100%; background: #fff; z-index: 0; clear: both;}
-footer ul { display: inline; width: 100%;}
+footer ul { display: inline-block; width: 100%;}
 ul.one-fourth { width: 21.5%; margin-right: 20px; float: left;}
 br {line-height: 24px;}
 
@@ -26,7 +26,6 @@ a.title, h2.title, span.title, label.title { font-weight: 700; color: #FF3300;}
 a.author, h2.author, span.author, label.author {color: #FFCC00;}
 span.created {color: #339933;}
 a.borrow {float:right;}
-ul.book-info li {border-top: 1px solid #000;}
 .on-loan { text-decoration: line-through;}
 
 /* form */
@@ -112,7 +111,7 @@ input.submit:hover {
 /* MEDIA */
 
 @media screen and (max-width: 380px) {
-	html {font-size:12px; line-height:16px; }
+	body, p, h2, li {font-size:12px; line-height:16px; }
 	footer ul {display: block;}
 	ul.one-fourth {width: 100%;}
 	.entry, form {width: 100%; }

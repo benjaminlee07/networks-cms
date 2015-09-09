@@ -136,6 +136,35 @@ router.get('/', cas.bouncer, function(request, response, toss) {
   
 });
 
+// BOOKSHELF 
+// / 
+// Shows _all_ the books index
+
+router.get('/bookshelf', cas.bouncer, function(request, response, toss) {
+  
+  // When the server receives a request for "/", this code runs
+
+  // Find all the Book records in the database
+  Book.find(function(err, books) {
+    // This code will run once the database find is complete.
+    // books will contain a list (array) of all the books that were found.
+    // err will contain errors if any.
+    
+    // If there's an error, tell Express to do its default behavior, which is show the error page.
+    if (err) return toss(err);
+    
+    response.locals.events = eventsFromBooks(books);
+    
+    // layout tells template to wrap itself in the "layout" template (located in the "views" folder).
+    response.locals.layout = 'layout';
+
+    // Render the "bookshelf" template (located in the "views" folder).
+    response.render('bookshelf');
+
+  });
+  
+});
+
 
 // SHOW PAGE FOR A BOOK BY TITLE
 // /book?title=abc

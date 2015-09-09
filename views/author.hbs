@@ -1,10 +1,11 @@
 <body>
 
     <header>
-        <h1><a href="/">No Late Fees&trade;</a></h1>
+        <h1><a href="/">No Late Fees</a></h1>
         <ul class="nav">
             <li><a href="/book/new">Add a Book</a></li>
             <li><a href="/about">About</a></li>
+            <li><a href="/bookshelf">Bookshelf</a></li>
         </ul>
     </header>
 
@@ -15,23 +16,9 @@
         {{#each books}}
             <p><a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a></p>
             <p><span class="created">{{created_formatted}}</span></p>
+            <p><a span class="student" href="/student?name={{student}}">{{student}}</span></a></p>
             
             
-            <div class="events">
-                {{#each events}}
-                    <p class="entry">
-                        {{#if isLoan}}
-                            <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                            on <span class="created">{{created_formatted}}</span>.
-                        {{else}}
-                        {{#if isReturn}}
-                            <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
-                            on <span class="created">{{created_formatted}}</span>.
-                        {{/if}}
-                        {{/if}}
-                    </p>
-                {{/each}}  <br/>
-            </div>        
       
         {{/each}}
         
@@ -39,7 +26,7 @@
     
     <footer>
     <ul class="one-fourth">
-        <li><strong>No Late Fees&trade;</strong></li>
+        <li><strong>No Late Fees</strong></li>
         <li><a href="http://www.art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
