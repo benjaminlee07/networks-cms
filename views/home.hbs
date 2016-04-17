@@ -2,8 +2,8 @@
 <body>
 
     <header>
-        <h1><a href="/">No Late Fees</a></h1>
         <ul class="nav">
+            <li><a href="/"><strong>No Late Fees</strong></a></li>
             <li><a href="/book/new">Add a Book</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/bookshelf">Bookshelf</a></li>
@@ -12,17 +12,16 @@
 
     <div class="libraryWrapper">
     {{#each events}}
-    
         <p class="entry">
             {{#if isBook}}
-                <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> added the book <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>.
+                <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> added <a class="title {{loanClass}}" href="/book?name={{title}}">{{title}}</a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
                 {{#unless onLoan}}<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>{{/unless}}
             {{else}}
                 {{#if isLoan}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
+                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                     {{#unless returned}}<a href="/loan/return?book_id={{book.id}}" class="borrow">Return</a>{{/unless}}
                 {{else}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned the book <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
+                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                     {{#unless book.onLoan}}<a href="/loan/create?book_id={{book.id}}" class="borrow">Borrow</a>{{/unless}}
                 {{/if}}
             {{/if}}
@@ -34,13 +33,11 @@
 
 <footer>
     <ul class="one-fourth">
-        <li><strong>No Late Fees</strong></li>
         <li><a href="http://art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
     <ul class="one-fourth">
-        <li><a href="mailto:benjamin.d.lee@yale.edu" target="_blank">Contact</a></li>
-        <li>&copy; 2015</li>
+        <li><a href="mailto:mail@benfehrmanlee.info" target="_blank">Contact</a></li>
     </ul>
 </footer>
 

@@ -1,8 +1,8 @@
 <body>
 
     <header>
-        <h1><a href="/">No Late Fees</a></h1>
         <ul class="nav">
+            <li><a href="/"><strong>No Late Fees</strong></a></li>
             <li><a href="/book/new">Add a Book</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/bookshelf">Bookshelf</a></li>
@@ -14,14 +14,14 @@
     
         <p class="entry">
             {{#if isBook}}
-                <a class="title {{loanClass}}" href="/book?name={{title}}"><strong>{{title}}</strong></a> by <a class="author" href="/author?name={{author}}">{{author}}</a>.
+                <a class="title {{loanClass}}" href="/book?name={{title}}">{{title}}</a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
                 
             {{else}}
                 {{#if isLoan}}
-                    <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
+                    <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                   
                 {{else}}
-                    <a class="title {{book.loanClass}}" href="/book?name={{book.title}}"><strong>{{book.title}}</strong></a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>.
+                    <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                    
                 {{/if}}
             {{/if}}
@@ -33,13 +33,11 @@
 
 <footer>
     <ul class="one-fourth">
-        <li><strong>No Late Fees</strong></li>
         <li><a href="http://art.yale.edu" target="_blank">Yale School of Art</a></li>
     </ul>
    
     <ul class="one-fourth">
         <li><a href="mailto:benjamin.d.lee@yale.edu" target="_blank">Contact</a></li>
-        <li>&copy; 2015</li>
     </ul>
 </footer>
 

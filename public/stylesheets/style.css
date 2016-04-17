@@ -3,72 +3,73 @@ body, h1, h2, h3, h4, a, p, div, section, ul, li  {margin:0; padding:0; text-dec
 a:visited, a:link {color: #000;} 
 ul { -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 0px;}
 
-
 /* Layout */
-body { width: 100%;}
-header, footer { padding: 16px;}
-.libraryWrapper { padding: 20px;} 
+body { width: 100%; }
+header, footer { padding-left: 20px;}
+ul.nav {display: inline; float: left; width: 100%; margin-bottom: 40px;}
+ul.nav li {  float: left; padding-right: 40px; }
+ul.nav li:last-child {padding-right: 0;}
+
+
+.libraryWrapper { width:100%; max-width: 97.5%; padding: 0px 20px; clear: both;} 
 p, h2.title, h2.author, h2.student, .book-info li  { border-top: 1px solid #000;}
-footer { border-top: 1px solid #000; padding-top: 20px; width: 100%; background: #fff; z-index: 0; clear: both;}
+footer { border-top: 1px solid #000; width: 100%; background: #fff; z-index: 0; clear: both;}
 footer ul { display: inline-block; width: 100%;}
 ul.one-fourth { width: 21.5%; margin-right: 20px; float: left;}
-br {line-height: 24px;}
+br {line-height: 1.8;}
 
 /* HOVER */
 a:hover {background-color:#FFFF99;}
 .entry a:hover, a.student:hover, a.author:hover, a.title:hover, a.borrow:hover {background-color:#FFF; text-decoration: underline;}
 
 /* Typography */
-h1, h1 a { font: 24px Arial; font-weight: 800; line-height: 30px;}
-p, ul, li, a, h2 { font: 16px Arial; line-height: 24px;}
+p, ul, li, a, h2, input, text area, select, form {font: 21px 'Arial'; line-height: 1.8;  }
+h1, h1 a { font-weight: 800; line-height: 30px;}
+p, ul, li, a, h2 { line-height: 1.8;}
 a.student, h2.student, span.student, label.student { color: #3333FF; }
-a.title, h2.title, span.title, label.title { font-weight: 700; color: #FF3300;}
-a.author, h2.author, span.author, label.author {color: #FFCC00;}
-span.created {color: #339933;}
-a.borrow {float:right;}
+a.title, h2.title, span.title, label.title { color: #FF3300;}
+a.author, h2.author, span.author, label.author { color: #FFCC00;}
+span.created { color: #339933;}
+a.borrow { float:right;}
 .on-loan { text-decoration: line-through;}
 
 /* form */
 form {
-	font: 16px normal 'Arial';
-	line-height:24px;
-	border: 1px solid #000;
-	padding: 24px;
-	margin: 0 auto 40px auto;
+	line-height: 1.8;
+	margin: 0 auto auto;
 	float:left;
 	background: #fff;
-	width: 50%;
+	width: 100%;
 }
-
 
 
 form li {
 	border-top: 1px solid #000;
+	
 }
 
 book_form ul {
 	list-style-type:none;
     list-style-position:outside;
     margin:0px;
-    padding:0px;
-    
+
+
 }
 
 book_form ul li {
-    widht: 100%;
+    width: 100%;
+    
 }
 
 label {
 	width:15%;
     display:inline-block;
-    float: left;
-    margin-right: ;
 }
 
 
 intput,  input:focus, textarea:focus { 
     border: none; 
-  
+
     } 
 
 
@@ -76,12 +77,12 @@ input, text area, select    {
 box-shadow: none !important;
 width: 85%;
 border: none;
-outline: none;
-font: 16px normal 'Arial';
-line-height: 24px;
+outline: none;;
+line-height: 1.8;
 box-sizing: border-box;
 -webkit-box-sizing: border-box; 
 -moz-box-sizing: border-box; 
+    padding: 0;
 
 }
 
@@ -91,13 +92,9 @@ input.submit {
  -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0px;
-  font-weight: 700;
   width: 15%;
   color: #000;
   background: #fff;
-  margin-top: 24px;
-  padding: 6px 10px 6px 10px;
-  border: solid #000 1px;
   text-decoration: none;
 
 }
@@ -109,6 +106,14 @@ input.submit:hover {
 }
 
 /* MEDIA */
+
+@media screen and (max-width: 720px) {
+    body {font-size: 16px; line-height: 1.6;}
+    ul.nav {display: block; float: left; width: 100%;}
+    footer ul {display: block;}
+}
+
+
 
 @media screen and (max-width: 380px) {
 	body, p, h2, li {font-size:12px; line-height:16px; }
