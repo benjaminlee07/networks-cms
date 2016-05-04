@@ -5,8 +5,8 @@
         <ul class="nav">
             <li><a href="/"><strong>No Late Fees</strong></a></li>
             <li><a href="/book/new">Add a Book</a></li>
-            <li><a href="/about">About</a></li>
             <li><a href="/bookshelf">Bookshelf</a></li>
+            <li><a href="/about">About</a></li>
         </ul>
     </header>
 
@@ -14,14 +14,14 @@
     {{#each events}}
         <p class="entry">
             {{#if isBook}}
-                <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> added <a class="title {{loanClass}}" href="/book?name={{title}}">{{title}}</a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
+                <span class="created">{{created_formatted}}:</span> <a class="student" href="/student?name={{student}}">{{student}}</a> added <a class="title {{loanClass}}" href="/book?name={{title}}">{{title}}</a> by <a class="author" href="/author?name={{author}}">{{author}}</a>
                 {{#unless onLoan}}<a href="/loan/create?book_id={{id}}" class="borrow">Borrow</a>{{/unless}}
             {{else}}
                 {{#if isLoan}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                    <span class="created">{{created_formatted}}:</span> <a class="student" href="/student?name={{student}}">{{student}}</a> borrowed <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                     {{#unless returned}}<a href="/loan/return?book_id={{book.id}}" class="borrow">Return</a>{{/unless}}
                 {{else}}
-                    <span class="created">{{created_formatted}}</span>: <a class="student" href="/student?name={{student}}">{{student}}</a> returned <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
+                    <span class="created">{{created_formatted}}:</span> <a class="student" href="/student?name={{student}}">{{student}}</a> returned <a class="title {{book.loanClass}}" href="/book?name={{book.title}}">{{book.title}}</a> by <a class="author" href="/author?name={{book.author}}">{{book.author}}</a>
                     {{#unless book.onLoan}}<a href="/loan/create?book_id={{book.id}}" class="borrow">Borrow</a>{{/unless}}
                 {{/if}}
             {{/if}}

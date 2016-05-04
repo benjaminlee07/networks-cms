@@ -11,7 +11,7 @@ ul.nav li {  float: left; padding-right: 40px; }
 ul.nav li:last-child {padding-right: 0;}
 
 
-.libraryWrapper { width:100%; max-width: 97.5%; padding: 0px 20px; clear: both;} 
+.libraryWrapper { width:100%; max-width: 97.5%; padding: 0px 2%; clear: both;} 
 p, h2.title, h2.author, h2.student, .book-info li  { border-top: 1px solid #000;}
 footer { border-top: 1px solid #000; width: 100%; background: #fff; z-index: 0; clear: both;}
 footer ul { display: inline-block; width: 100%;}
@@ -63,13 +63,13 @@ book_form ul li {
 
 label {
 	width:15%;
-    display:inline-block;
+    display: inline-block;
 }
 
 
 intput,  input:focus, textarea:focus { 
     border: none; 
-
+    
     } 
 
 
@@ -82,8 +82,9 @@ line-height: 1.8;
 box-sizing: border-box;
 -webkit-box-sizing: border-box; 
 -moz-box-sizing: border-box; 
-    padding: 0;
-
+padding: 0;
+float: right;
+clear:both;
 }
 
 
@@ -91,11 +92,16 @@ box-sizing: border-box;
 input.submit {
  -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  bottom: 0;
+  position: fixed;
   border-radius: 0px;
-  width: 15%;
+  width: 100%;
+  border-top: 1px solid #000;
+  text-align: center;
   color: #000;
   background: #fff;
   text-decoration: none;
+  padding: 0 20px;
 
 }
 
@@ -108,16 +114,15 @@ input.submit:hover {
 /* MEDIA */
 
 @media screen and (max-width: 720px) {
-    body {font-size: 16px; line-height: 1.6;}
-    ul.nav {display: block; float: left; width: 100%;}
+    .libraryWrapper { width:100%; max-width: 98.5%; padding: 0px 10px; clear: both;}
+    
+    p, ul, li, a, h2, input, text area, select, form {font: 12px 'Arial'; line-height: 1.4;  }
+    ul.nav li, ul.one-fourth {display: block; float: left; width: 100%;}
     footer ul {display: block;}
+    label, input, text area, select, form { width:100%; display: inline-block;}
+    
+    span.created, a.borrow { display: block; }
+    
 }
 
 
-
-@media screen and (max-width: 380px) {
-	body, p, h2, li {font-size:12px; line-height:16px; }
-	footer ul {display: block;}
-	ul.one-fourth {width: 100%;}
-	.entry, form {width: 100%; }
-}
